@@ -39,39 +39,38 @@ instr_idx       = 0
 curr_instr      = instr_list[instr_idx]
 broadcast_instr = []
 
-#or it.instruction_table_is_incomplete(instr_table))
+
+def get_corresponding_rs_fu(rs_type):
+    switcher = {"load": (load_rs, load_fu),
+                "store": (store_rs, store_fu),
+                "add": (add_rs, add_fu),
+                "mult": (mult_rs, mult_fu)
+               }
+
+    return switcher.get(rs_type,(None,None))
+
+
 while (not(len(instr_list) == 0) or it.instruction_table_is_incomplete(instr_table)):
     try:
         clock_cycle += 1
         # Write-Result/Broadcast Block
-        for broadcast_tuple in broadcast_instr:
-            entry_idx = it.find_entry_idx(instr_table, broadcast_tuple[1])
-            dest_reg = broadcast_tuple[1].dest
-            rs_type = rf.get_reg_tag(reg_file, dest_reg).rs_type
-            stat_idx = rf.get_reg_tag(reg_file, dest_reg).idx
-
-            if rs_type == "load":
-                curr_rs = load_rs
-                curr_fu = load_fu
-            elif rs_type == "add":
-                curr_rs = add_rs
-                curr_fu = add_fu
-            elif rs_type == "mult":
-                curr_rs = mult_rs
-                curr_fu = mult_fu
-            else:
-                curr_rs = store_rs
-                curr_fu = store_fu
-
-            it.write_result(instr_table, entry_idx, clock_cycle)
-            if (curr_fu.fu_type == "add" or curr_fu.fu_type == "mult"): 
+        for write_res in broadcast_instr:
+            entry_idx          = it.find_entry_idx(instr_table, write_res[1])
+            dest_reg           = write_res[1].dest
+            rs_type            = rf.get_reg_tag(reg_file, dest_reg).rs_type
+            stat_idx           = rf.get_reg_tag(reg_file, dest_reg).idx
+            (curr_rs, curr_fu) = get_corresponding_rs_fu(rs_type)
+            
+            if (curr_fu.fu_type == "add" or curr_fu.fu_type == "mult"):
                 curr_fu.empty_unit()
             else:
                 curr_fu.empty_unit(stat_idx)
+
+            it.write_result(instr_table, entry_idx, clock_cycle)
             rs.clear_rs_tags(rs_list, rf.get_reg_tag(reg_file, dest_reg))
             rf.clear_register_tag(reg_file, dest_reg)
             rs.clear_station(curr_rs, stat_idx)
-            broadcast_instr.remove(broadcast_tuple)
+            broadcast_instr.remove(write_res)
 
         # Issue Instruction Block
         if not(len(instr_list) == 0):
@@ -143,49 +142,8 @@ while (not(len(instr_list) == 0) or it.instruction_table_is_incomplete(instr_tab
                             compl_instr_idx = it.find_entry_idx(instr_table, instr)
                             it.complete_execution(instr_table, compl_instr_idx, clock_cycle)
                             broadcast_instr.append((func_unit, instr))
-                            
-
-            ########################################################################################
-            #if load_fu.is_occupied():
-            #    occupied_slots = load_fu.find_occupied_slots()
-            #    for slot_idx in occupied_slots:
-            #        if load_fu.is_instr_complete(load_fu.buffer_slots[slot_idx], clock_cycle):
-            #            complete_instr_idx = it.find_entry_idx(instr_table,
-            #                                                   load_fu.buffer_slots[slot_idx]["Instruction"])
-            #            it.complete_execution(instr_table, complete_instr_idx, clock_cycle)
-            #            broadcast_instr.append((load_fu,
-            #                                    load_fu.buffer_slots[slot_idx]["Instruction"]))
-            #if store_fu.is_occupied():
-            #    occupied_slots = store_fu.find_occupied_slots()
-            #    for slot_idx in occupied_slots:
-            #        if store_fu.is_instr_complete(store_fu.buffer_slots[slot_idx], clock_cycle):
-            #            complete_instr_idx = it.find_entry_idx(instr_table,
-            #                                                   store_fu.buffer_slots[slot_idx]["Instruction"])
-            #            it.complete_execution(instr_table, complete_instr_idx, clock_cycle)
-            #            broadcast_instr.append((store_fu,
-            #                                    store_fu.buffer_slots[slot_idx]["Instruction"]))
-
-            ## TODO: Replace with simpler for-loop, separate from the load and store 
-            ## buffers
-            #if fu.add_fu.is_occupied():
-            #    if fu.add_fu.is_instr_complete(fu.add_fu.current_instruction, clock_cycle):
-            #        complete_instr_idx = it.find_entry_idx(instr_table,
-            #                                               fu.add_fu.current_instruction)
-            #        it.complete_execution(instr_table, complete_instr_idx, clock_cycle)
-            #        broadcast_instr.append((add_fu, add_fu.current_instruction))
-
-            #if fu.mult_fu.is_occupied():
-            #    if fu.mult_fu.is_instr_complete(fu.mult_fu.current_instruction, clock_cycle):
-            #        complete_instr_idx = it.find_entry_idx(instr_table,
-            #                                               fu.mult_fu.current_instruction)
-            #        it.complete_execution(instr_table, complete_instr_idx, clock_cycle)
-            #        broadcast_instr.append((mult_fu, mult_fu.current_instruction))
-            ########################################################################################
-
     except KeyboardInterrupt:
-        print("Clock cycle finished at: %d" % (clock_cycle))
-        for idx,entry in enumerate(instr_table):
-            print(entry)
+        print("Simulator abruptly interrrupted. Exiting...")
         break
 
 
@@ -197,16 +155,3 @@ for idx,entry in enumerate(instr_table):
     compl_out = ("\t Exec Complete %d" % entry["Exec Complete"])
     write_out = ("\t Write Result %d" % entry["Write Result"])
     print(instr_out + issue_out + start_out + compl_out + write_out)
-
-#for load_station in load_rs.stations:
-#    print(load_rs.stations[load_station])
-#print("***********************************************************************")
-#for store_station in store_rs.stations:
-#    print(store_rs.stations[store_station])
-#print("***********************************************************************")
-#for add_station in add_rs.stations:
-#    print(add_rs.stations[add_station])
-#print("***********************************************************************")
-#for mult_station in mult_rs.stations:
-#    print(mult_rs.stations[mult_station])
-#print("***********************************************************************")
