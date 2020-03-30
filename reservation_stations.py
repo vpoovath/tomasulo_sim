@@ -103,11 +103,6 @@ def is_station_ready(res_stat, stat_idx, reg_file):
                              stat_idx)
         return True
     else:
-        print(station[1])
-        print("Operand1: "    + str(operand1_ready))
-        print("Operand2: "    + str(operand2_ready))
-        print("Destination:"  + str(dest_ready))
-        print("FU Available:" + str(fu_is_available))
         return False
 
 
@@ -155,8 +150,6 @@ def populate_rs(res_stat, stat_idx, instr, reg_file):
                                                       instr.operand1).rs_type
             res_stat.stations[stat_idx][4].idx = rf.get_reg_tag(reg_file, 
                                                      instr.operand1).idx
-            #res_stat.stations[stat_idx][4].rs_type = reg_file[instr.operand1][0].rs_type
-            #res_stat.stations[stat_idx][4].idx     = reg_file[instr.operand1][0].idx
     if type(instr.operand2) == int:
         res_stat.stations[stat_idx][6].clear_tag()
     else:
@@ -167,8 +160,6 @@ def populate_rs(res_stat, stat_idx, instr, reg_file):
                                                       instr.operand2).rs_type
             res_stat.stations[stat_idx][4].idx = rf.get_reg_tag(reg_file,
                                                       instr.operand2).idx
-            #res_stat.stations[stat_idx][6].rs_type = reg_file[instr.operand2][0].rs_type
-            #res_stat.stations[stat_idx][6].idx     = reg_file[instr.operand2][0].idx
     
     rf.load_register_tag(reg_file, instr.dest, res_stat.rs_type, stat_idx)
     res_stat.stations[stat_idx][2].rs_type = res_stat.rs_type
@@ -177,5 +168,4 @@ def populate_rs(res_stat, stat_idx, instr, reg_file):
     if is_station_ready(res_stat, stat_idx, reg_file):
         res_stat.stations[stat_idx][2].rs_type = res_stat.rs_type
         res_stat.stations[stat_idx][2].idx = stat_idx
-        #rf.load_register_tag(reg_file, instr.dest, res_stat.rs_type, stat_idx)
         res_stat.stations[stat_idx][8] = "Ready"

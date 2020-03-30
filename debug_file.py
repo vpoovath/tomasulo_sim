@@ -32,7 +32,7 @@ mult_fu         = fu.mult_fu
 rs_list         = [load_rs, store_rs, add_rs, mult_rs]
 fu_list         = [load_fu, store_fu, add_fu, mult_fu]
 reg_file        = rf.create_register_file()
-instr_list      = ir.create_instruction_list("waw_hazard.txt")
+instr_list      = ir.create_instruction_list()
 instr_table     = it.create_instruction_table(instr_list)
 clock_cycle     = 0
 instr_idx       = 0
@@ -55,6 +55,7 @@ while (not(len(instr_list) == 0) or it.instruction_table_is_incomplete(instr_tab
         clock_cycle += 1
         # Write-Result/Broadcast Block
         for write_res in broadcast_instr:
+            #import pdb; pdb.set_trace()
             entry_idx          = it.find_entry_idx(instr_table, write_res[1])
             dest_reg           = write_res[1].dest
             rs_type            = rf.get_reg_tag(reg_file, dest_reg).rs_type
@@ -65,6 +66,11 @@ while (not(len(instr_list) == 0) or it.instruction_table_is_incomplete(instr_tab
                 curr_fu.empty_unit()
             else:
                 curr_fu.empty_unit(stat_idx)
+
+            print("Clock cycle: %d" % clock_cycle)
+            print(dest_reg)
+            print(rs_type)
+            print(stat_idx)
 
             it.write_result(instr_table, entry_idx, clock_cycle)
             rs.clear_rs_tags(rs_list, rf.get_reg_tag(reg_file, dest_reg))
@@ -105,7 +111,8 @@ while (not(len(instr_list) == 0) or it.instruction_table_is_incomplete(instr_tab
                     station = res_stat.stations[stat_idx]
                     exec_instr_idx = it.find_instr_idx(instr_table, station)
 
-                    if instr_table[exec_instr_idx]['Exec Start'] is None:
+                    if (instr_table[exec_instr_idx]['Exec Start'] is None and 
+                        func_unit.is_available()):
                         it.start_execution(instr_table,exec_instr_idx, clock_cycle)
                         func_unit.load_unit(instr_table[exec_instr_idx]['Instruction'],
                                             clock_cycle, stat_idx)
