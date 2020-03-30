@@ -45,7 +45,6 @@ while (not(len(instr_list) == 0) or it.instruction_table_is_incomplete(instr_tab
         clock_cycle += 1
         # Write-Result/Broadcast Block
         for broadcast_tuple in broadcast_instr:
-            print("About to broadcast")
             entry_idx = it.find_entry_idx(instr_table, broadcast_tuple[1])
             dest_reg = broadcast_tuple[1].dest
             rs_type = rf.get_reg_tag(reg_file, dest_reg).rs_type
@@ -64,11 +63,6 @@ while (not(len(instr_list) == 0) or it.instruction_table_is_incomplete(instr_tab
                 curr_rs = store_rs
                 curr_fu = store_fu
 
-            print("Clock Cycle: %d" % (clock_cycle))
-            print(dest_reg)
-            print(rs_type)
-            print(stat_idx)
-
             it.write_result(instr_table, entry_idx, clock_cycle)
             if (curr_fu.fu_type == "add" or curr_fu.fu_type == "mult"): 
                 curr_fu.empty_unit()
@@ -81,16 +75,11 @@ while (not(len(instr_list) == 0) or it.instruction_table_is_incomplete(instr_tab
 
         # Issue Instruction Block
         if not(len(instr_list) == 0):
-            if (curr_instr.operation == "ADDD" or
-                curr_instr.operation == "SUBD"):
-                curr_rs = rs.add_rs
-            elif (curr_instr.operation == "MULTD" or
-                  curr_instr.operation == "DIVD"):
-                curr_rs = rs.mult_rs
-            elif curr_instr.operation == "LD":
-                curr_rs = rs.load_rs
-            else:
-                curr_rs = rs.store_rs
+            op = curr_instr.operation
+            if (op == "ADDD" or op == "SUBD"):    curr_rs = rs.add_rs
+            elif (op == "MULTD" or op == "DIVD"): curr_rs = rs.mult_rs
+            elif op == "LD":                      curr_rs = rs.load_rs
+            else:                                 curr_rs = rs.store_rs
 
             if not (curr_rs.find_nonoccupied_station_idx() is None):
                 rs_idx = curr_rs.find_nonoccupied_station_idx()
@@ -100,7 +89,6 @@ while (not(len(instr_list) == 0) or it.instruction_table_is_incomplete(instr_tab
                 instr_idx += 1
                 if not(len(instr_list) == 0): curr_instr = instr_list[0]
 
-        #TODO: Replace with simpler for loop
         if it.instruction_table_is_incomplete(instr_table):
             busy_stations = OrderedDict(())
 
@@ -111,26 +99,6 @@ while (not(len(instr_list) == 0) or it.instruction_table_is_incomplete(instr_tab
                     for idx in occupied_stations:
                         busy_stations[idx] = res_stat
 
-            #if load_rs.is_occupied():
-            #    load_stations = load_rs.find_occupied_station_idx()
-            #    for index in load_stations:
-            #        busy_stations[index] = load_rs
-
-            #if store_rs.is_occupied():
-            #    store_stations = store_rs.find_occupied_station_idx()
-            #    for index in store_stations:
-            #        busy_stations[index] = store_rs
-
-            #if add_rs.is_occupied():
-            #    add_stations = add_rs.find_occupied_station_idx()
-            #    for index in add_stations:
-            #        busy_stations[index] = add_rs
-
-            #if mult_rs.is_occupied():
-            #    mult_stations = mult_rs.find_occupied_station_idx()
-            #    for index in mult_stations:
-            #        busy_stations[index] = mult_rs
-            
             # Here we're servicing the busy stations - an instruction leaves the
             # busy_station when it is ready to execute. Note this is different from
             # the instruction leaving the RESERVATION STATION (which occurs when 
@@ -158,40 +126,61 @@ while (not(len(instr_list) == 0) or it.instruction_table_is_incomplete(instr_tab
 
             # Complete Execution Block
             # TODO: Replace with simpler for-loop
-            if load_fu.is_occupied():
-                occupied_slots = load_fu.find_occupied_slots()
-                for slot_idx in occupied_slots:
-                    if load_fu.is_instr_complete(load_fu.buffer_slots[slot_idx], clock_cycle):
-                        complete_instr_idx = it.find_entry_idx(instr_table,
-                                                               load_fu.buffer_slots[slot_idx]["Instruction"])
-                        it.complete_execution(instr_table, complete_instr_idx, clock_cycle)
-                        broadcast_instr.append((load_fu,
-                                                load_fu.buffer_slots[slot_idx]["Instruction"]))
-            if store_fu.is_occupied():
-                occupied_slots = store_fu.find_occupied_slots()
-                for slot_idx in occupied_slots:
-                    if store_fu.is_instr_complete(store_fu.buffer_slots[slot_idx], clock_cycle):
-                        complete_instr_idx = it.find_entry_idx(instr_table,
-                                                               store_fu.buffer_slots[slot_idx]["Instruction"])
-                        it.complete_execution(instr_table, complete_instr_idx, clock_cycle)
-                        broadcast_instr.append((store_fu,
-                                                store_fu.buffer_slots[slot_idx]["Instruction"]))
+            for func_unit in fu_list:
+                if func_unit.is_occupied():
+                    if (func_unit.fu_type == "load" or func_unit.fu_type == "store"):
+                        occupied_slots = func_unit.find_occupied_slots()
+                        for slot_idx in occupied_slots:
+                            slot = func_unit.buffer_slots[slot_idx]
+                            instr = slot["Instruction"]
+                            if func_unit.is_instr_complete(slot, clock_cycle):
+                                compl_instr_idx = it.find_entry_idx(instr_table, instr)
+                                it.complete_execution(instr_table, compl_instr_idx, clock_cycle)
+                                broadcast_instr.append((func_unit, instr))
+                    else:
+                        instr = func_unit.current_instruction
+                        if func_unit.is_instr_complete(instr, clock_cycle):
+                            compl_instr_idx = it.find_entry_idx(instr_table, instr)
+                            it.complete_execution(instr_table, compl_instr_idx, clock_cycle)
+                            broadcast_instr.append((func_unit, instr))
+                            
 
-            # TODO: Replace with simpler for-loop, separate from the load and store 
-            # buffers
-            if fu.add_fu.is_occupied():
-                if fu.add_fu.is_instr_complete(fu.add_fu.current_instruction, clock_cycle):
-                    complete_instr_idx = it.find_entry_idx(instr_table,
-                                                           fu.add_fu.current_instruction)
-                    it.complete_execution(instr_table, complete_instr_idx, clock_cycle)
-                    broadcast_instr.append((add_fu, add_fu.current_instruction))
+            ########################################################################################
+            #if load_fu.is_occupied():
+            #    occupied_slots = load_fu.find_occupied_slots()
+            #    for slot_idx in occupied_slots:
+            #        if load_fu.is_instr_complete(load_fu.buffer_slots[slot_idx], clock_cycle):
+            #            complete_instr_idx = it.find_entry_idx(instr_table,
+            #                                                   load_fu.buffer_slots[slot_idx]["Instruction"])
+            #            it.complete_execution(instr_table, complete_instr_idx, clock_cycle)
+            #            broadcast_instr.append((load_fu,
+            #                                    load_fu.buffer_slots[slot_idx]["Instruction"]))
+            #if store_fu.is_occupied():
+            #    occupied_slots = store_fu.find_occupied_slots()
+            #    for slot_idx in occupied_slots:
+            #        if store_fu.is_instr_complete(store_fu.buffer_slots[slot_idx], clock_cycle):
+            #            complete_instr_idx = it.find_entry_idx(instr_table,
+            #                                                   store_fu.buffer_slots[slot_idx]["Instruction"])
+            #            it.complete_execution(instr_table, complete_instr_idx, clock_cycle)
+            #            broadcast_instr.append((store_fu,
+            #                                    store_fu.buffer_slots[slot_idx]["Instruction"]))
 
-            if fu.mult_fu.is_occupied():
-                if fu.mult_fu.is_instr_complete(fu.mult_fu.current_instruction, clock_cycle):
-                    complete_instr_idx = it.find_entry_idx(instr_table,
-                                                           fu.mult_fu.current_instruction)
-                    it.complete_execution(instr_table, complete_instr_idx, clock_cycle)
-                    broadcast_instr.append((mult_fu, mult_fu.current_instruction))
+            ## TODO: Replace with simpler for-loop, separate from the load and store 
+            ## buffers
+            #if fu.add_fu.is_occupied():
+            #    if fu.add_fu.is_instr_complete(fu.add_fu.current_instruction, clock_cycle):
+            #        complete_instr_idx = it.find_entry_idx(instr_table,
+            #                                               fu.add_fu.current_instruction)
+            #        it.complete_execution(instr_table, complete_instr_idx, clock_cycle)
+            #        broadcast_instr.append((add_fu, add_fu.current_instruction))
+
+            #if fu.mult_fu.is_occupied():
+            #    if fu.mult_fu.is_instr_complete(fu.mult_fu.current_instruction, clock_cycle):
+            #        complete_instr_idx = it.find_entry_idx(instr_table,
+            #                                               fu.mult_fu.current_instruction)
+            #        it.complete_execution(instr_table, complete_instr_idx, clock_cycle)
+            #        broadcast_instr.append((mult_fu, mult_fu.current_instruction))
+            ########################################################################################
 
     except KeyboardInterrupt:
         print("Clock cycle finished at: %d" % (clock_cycle))
