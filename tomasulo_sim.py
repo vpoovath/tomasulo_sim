@@ -1,0 +1,162 @@
+
+#!/usr/env/python
+
+
+import instruction_reader as ir
+import instruction_table as it
+import register_file as rf
+import reservation_stations as rs
+import functional_units as fu
+from functional_units import FunctionalUnit
+from functional_units import LoadStoreUnit
+
+
+NUM_LD_STATIONS     = 3
+NUM_SD_STATIONS     = 3
+NUM_ADDD_STATIONS   = 3
+NUM_MULTD_STATIONS  = 2
+LD_STATION_START    = 0
+SD_STATION_START    = LD_STATION_START + NUM_LD_STATIONS
+ADDD_STATION_START  = LD_STATION_START + NUM_LD_STATIONS + NUM_SD_STATIONS
+MULTD_STATION_START = (LD_STATION_START + NUM_LD_STATIONS + NUM_SD_STATIONS +
+                       NUM_ADDD_STATIONS)
+
+load_rs     = rs.load_rs
+store_rs    = rs.store_rs
+add_rs      = rs.add_rs
+mult_rs     = rs.mult_rs
+load_fu     = fu.load_fu
+store_fu    = fu.store_fu
+add_fu      = fu.add_fu
+mult_fu     = fu.mult_fu
+rs_list     = [load_rs, store_rs, add_rs, mult_rs]
+fu_list     = [load_fu, store_fu, add_fu, mult_fu]
+reg_file    = rf.create_register_file()
+instr_list  = ir.create_instruction_list()
+instr_table = it.create_instruction_table(instr_list)
+clock_cycle = 0
+instr_idx   = 0
+curr_instr  = instr_list[instr_idx]
+
+while not(len(instr_list) == 0):
+    clock_cycle += 1
+
+    if not(len(instr_list) == 0):
+        if (curr_instr.operation == "ADDD" or
+            curr_instr.operation == "SUBD"):
+            curr_rs = rs.add_rs
+        elif (curr_instr.operation == "MULTD" or
+              curr_instr.operation == "DIVD"):
+            curr_rs = rs.mult_rs
+        elif curr_instr.operation == "LD":
+            curr_rs = rs.load_rs
+        else:
+            curr_rs = rs.store_rs
+
+        if not (curr_rs.find_nonoccupied_station_idx() is None):
+            rs_idx = curr_rs.find_nonoccupied_station_idx()
+            it.issue_instruction(instr_table,instr_idx,clock_cycle)
+            rs.populate_rs(curr_rs,rs_idx,curr_instr,reg_file)
+            instr_list.remove(curr_instr)
+            instr_idx += 1
+            if not(len(instr_list) == 0): curr_instr = instr_list[0]
+
+    #TODO: Replace with simpler for loop
+    if it.instruction_table_is_incomplete(instr_table):
+        busy_stations = {}
+        instr_to_broadcast = []
+
+        if rs.load_rs.is_occupied():
+            load_stations = rs.load_rs.find_occupied_station_idx()
+            for index in load_stations:
+                busy_stations[index] = rs.load_rs
+
+        if rs.store_rs.is_occupied():
+            store_stations = rs.store_rs.find_occupied_station_idx()
+            for index in store_stations:
+                busy_stations[index] = rs.store_rs
+
+        if rs.add_rs.is_occupied():
+            add_stations = rs.add_rs.find_occupied_station_idx()
+            for index in add_stations:
+                busy_stations[index] = rs.add_rs
+
+        if rs.mult_rs.is_occupied():
+            mult_stations = rs.mult_rs.find_occupied_station_idx()
+            for index in mult_stations:
+                busy_stations[index] = rs.mult_rs
+
+        # Here we're servicing the busy stations - an instruction leaves the
+        # busy_station when it is ready to execute. Note this is different from
+        # the instruction leaving the RESERVATION STATION (which occurs when 
+        # it is ready to broadcaset to the CDB)
+        for stat_idx,res_stat in busy_stations.items():
+            func_unit = rs.get_corresponding_fu(res_stat.stations[stat_idx])
+
+            if res_stat.stations[stat_idx][8] == "Ready":
+                station = res_stat.stations[stat_idx]
+                exec_instr_idx = it.find_instr_idx(instr_table, station)
+
+                if instr_table[exec_instr_idx]['Exec Start'] is None:
+                    it.start_execution(instr_table,exec_instr_idx, clock_cycle)
+                    func_unit.load_unit(instr_table[exec_instr_idx]['Instruction'],
+                                        clock_cycle, stat_idx)
+            else:
+                if (rs.is_station_ready(res_stat.stations[stat_idx], reg_file)):
+                    res_stat.stations[stat_idx][8] = "Ready"
+
+        # TODO: Replace with simpler for-loop
+        if load_fu.is_occupied():
+            occupied_slots = load_fu.find_occupied_slots()
+            for slot_idx in occupied_slots:
+                if load_fu.is_instr_complete(load_fu.buffer_slots[slot_idx], clock_cycle):
+                    complete_instr_idx = it.find_entry_idx(instr_table,
+                                                           load_fu.buffer_slots[slot_idx]["Instruction"])
+                    it.complete_execution(instr_table, complete_instr_idx, clock_cycle)
+                    instr_to_broadcast.append(load_fu.buffer_slots[slot_idx]["Instruction"])
+
+        #if store_fu.is_occupied():
+        #    print("Store is occupied, check to see if it's done")
+        #    if fu.store_fu.is_instr_complete(fu.store_fu.current_instruction, clock_cycle):
+        #        complete_instr_idx = it.find_entry_idx(instr_table,
+        #                                               fu.store_fu.current_instruction)
+        #        it.complete_execution(instr_table, complete_instr_idx, clock_cycle)
+        #        instr_to_broadcast.append(fu.store_fu)
+             
+
+        # TODO: Replace with simpler for-loop, separate from the load and store
+        # buffers
+        if fu.add_fu.is_occupied():
+            if fu.add_fu.is_instr_complete(fu.add_fu.current_instruction, clock_cycle):
+                complete_instr_idx = it.find_entry_idx(instr_table,
+                                                       fu.add_fu.current_instruction)
+                it.complete_execution(instr_table, complete_instr_idx, clock_cycle)
+                instr_to_broadcast.append(fu.add_fu)
+
+        if fu.mult_fu.is_occupied():
+            if fu.mult_fu.is_instr_complete(fu.mult_fu.current_instruction, clock_cycle):
+                complete_instr_idx = it.find_entry_idx(instr_table,
+                                                       fu.mult_fu.current_instruction)
+                it.complete_execution(instr_table, complete_instr_idx, clock_cycle)
+                instr_to_broadcast.append(fu.mult_fu)
+
+        #rs.clear_station(res_stat, stat_idx) # Clear after writing to CDB
+
+
+print("Clock cycle finished at: %d" % (clock_cycle))
+for idx,entry in enumerate(instr_table):
+    print(idx)
+    print(entry)
+for load_station in load_rs.stations:
+    print(load_rs.stations[load_station])
+print("***********************************************************************")
+for store_station in store_rs.stations:
+    print(store_rs.stations[store_station])
+print("***********************************************************************")
+for add_station in add_rs.stations:
+    print(add_rs.stations[add_station])
+print("***********************************************************************")
+for mult_station in mult_rs.stations:
+    print(mult_rs.stations[mult_station])
+print("***********************************************************************")
+
