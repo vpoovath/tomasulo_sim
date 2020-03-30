@@ -32,7 +32,7 @@ mult_fu         = fu.mult_fu
 rs_list         = [load_rs, store_rs, add_rs, mult_rs]
 fu_list         = [load_fu, store_fu, add_fu, mult_fu]
 reg_file        = rf.create_register_file()
-instr_list      = ir.create_instruction_list()
+instr_list      = ir.create_instruction_list("waw_hazard.txt")
 instr_table     = it.create_instruction_table(instr_list)
 clock_cycle     = 0
 instr_idx       = 0
@@ -98,10 +98,6 @@ while (not(len(instr_list) == 0) or it.instruction_table_is_incomplete(instr_tab
                     for idx in occupied_stations:
                         busy_stations[idx] = res_stat
 
-            # Here we're servicing the busy stations - an instruction leaves the
-            # busy_station when it is ready to execute. Note this is different from
-            # the instruction leaving the RESERVATION STATION (which occurs when 
-            # it is ready to broadcaset to the CDB)
             for stat_idx,res_stat in busy_stations.items():
                 func_unit = rs.get_corresponding_fu(res_stat.stations[stat_idx])
 
@@ -124,7 +120,6 @@ while (not(len(instr_list) == 0) or it.instruction_table_is_incomplete(instr_tab
                         res_stat.stations[stat_idx][8] = "Not Ready"
 
             # Complete Execution Block
-            # TODO: Replace with simpler for-loop
             for func_unit in fu_list:
                 if func_unit.is_occupied():
                     if (func_unit.fu_type == "load" or func_unit.fu_type == "store"):
