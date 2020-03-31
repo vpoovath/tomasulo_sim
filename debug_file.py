@@ -149,9 +149,9 @@ while (not(len(instr_list) == 0) or it.instruction_table_is_incomplete(instr_tab
         break
 
 
-print("Clock cycle finished at: %d" % (clock_cycle))
+print("Completed at Clock Cycle: %d" % (clock_cycle))
 for idx,entry in enumerate(instr_table):
-    instr_out = ("Instr index: %d" % idx)
+    instr_out = ("Instr index: %d" % (idx+1))
     issue_out = ("\t Issue: %d" % entry["Issue"])
     start_out = ("\t Exec Start %d" % entry["Exec Start"])
     compl_out = ("\t Exec Complete %d" % entry["Exec Complete"])
