@@ -79,7 +79,7 @@ class Instruction:
 
 # Directly read the instructions from the text file. 
 # If no text file is specified, the one within project's directory is used.
-def read_text_input(filename="instruction_input.txt"):
+def read_text_input(filename):
     text_list = []
     with open(filename,'r') as fp:
         line = fp.readline()
@@ -92,7 +92,8 @@ def read_text_input(filename="instruction_input.txt"):
 
 # Using the instructions from the text file, generate a list of Instruction
 # objects that will be used in actual simulation.
-def create_instruction_list(filename="instruction_input.txt"):
+def create_instruction_list(filename=None):
+    if filename is None: filename = "instruction_input.txt"
     lines        = read_text_input(filename)
     instructions = [Instruction(line[0],line[1],line[2],line[3]) for line in
                     lines]
