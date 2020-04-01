@@ -122,11 +122,16 @@ class LoadStoreUnit():
             self.buffer_slots[idx]["Start Time"]    = clock_cycle
             self.buffer_slots[idx]["Station Index"] = stat_idx
 
-    def empty_slot(self,idx):
-        if (idx <= 0 or idx > self.num_slots):
+    def empty_slot(self, stat_idx):
+        if (stat_idx <= 0):
             raise ValueError("Index %d is out of range for Buffer Unit!" %
-                             (idx))
+                             (stat_idx))
             return None
+        elif (stat_idx > self.num_slots):
+            idx = stat_idx - self.num_slots
+        else:
+            idx = stat_idx
+            
         self.buffer_slots[idx-1]["Instruction"]   = None
         self.buffer_slots[idx-1]["Start Time"]    = None
         self.buffer_slots[idx-1]["Station Index"] = None

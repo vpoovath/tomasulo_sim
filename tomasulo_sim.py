@@ -1,6 +1,7 @@
 #!/usr/env/python
 
 
+import sys
 import instruction_reader as ir
 import instruction_table as it
 import register_file as rf
@@ -177,4 +178,8 @@ def run_tomasulo_sim(filename=None):
 
 
 if __name__ == '__main__':
-    run_tomasulo_sim()
+    if len(sys.argv) > 1:
+        print("Input File: " + str(sys.argv[1]))
+        run_tomasulo_sim(sys.argv[1])
+    else:
+        run_tomasulo_sim()

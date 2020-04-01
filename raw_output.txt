@@ -1,0 +1,31 @@
+Input File: raw_hazard.txt
+
+Clock Cycle: 1 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: None		Write Res: None
+Instr index: 1		Issue: None		Exec Strt: None		Exec Comp: None		Write Res: None
+
+Clock Cycle: 2 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 2		Write Res: None
+Instr index: 1		Issue: 2		Exec Strt: None		Exec Comp: None		Write Res: None
+
+Clock Cycle: 3 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 2		Write Res: 3
+Instr index: 1		Issue: 2		Exec Strt: None		Exec Comp: None		Write Res: None
+
+Clock Cycle: 4 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 2		Write Res: 3
+Instr index: 1		Issue: 2		Exec Strt: 4		Exec Comp: None		Write Res: None
+
+Clock Cycle: 5 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 2		Write Res: 3
+Instr index: 1		Issue: 2		Exec Strt: 4		Exec Comp: 5		Write Res: None
+
+Clock Cycle: 6 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 2		Write Res: 3
+Instr index: 1		Issue: 2		Exec Strt: 4		Exec Comp: 5		Write Res: 6
+
+Finished at Clock Cycle: 6
+
+Clock Cycle: 6 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 2		Write Res: 3
+Instr index: 1		Issue: 2		Exec Strt: 4		Exec Comp: 5		Write Res: 6

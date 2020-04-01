@@ -1,0 +1,88 @@
+Input File: waw_hazard.txt
+
+Clock Cycle: 1 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: None		Write Res: None
+Instr index: 1		Issue: None		Exec Strt: None		Exec Comp: None		Write Res: None
+Instr index: 2		Issue: None		Exec Strt: None		Exec Comp: None		Write Res: None
+
+Clock Cycle: 2 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: None		Write Res: None
+Instr index: 1		Issue: 2		Exec Strt: None		Exec Comp: None		Write Res: None
+Instr index: 2		Issue: None		Exec Strt: None		Exec Comp: None		Write Res: None
+
+Clock Cycle: 3 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: None		Write Res: None
+Instr index: 1		Issue: 2		Exec Strt: None		Exec Comp: None		Write Res: None
+Instr index: 2		Issue: 3		Exec Strt: None		Exec Comp: None		Write Res: None
+
+Clock Cycle: 4 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: None		Write Res: None
+Instr index: 1		Issue: 2		Exec Strt: None		Exec Comp: None		Write Res: None
+Instr index: 2		Issue: 3		Exec Strt: None		Exec Comp: None		Write Res: None
+
+Clock Cycle: 5 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: None		Write Res: None
+Instr index: 1		Issue: 2		Exec Strt: None		Exec Comp: None		Write Res: None
+Instr index: 2		Issue: 3		Exec Strt: None		Exec Comp: None		Write Res: None
+
+Clock Cycle: 6 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: None		Write Res: None
+Instr index: 1		Issue: 2		Exec Strt: None		Exec Comp: None		Write Res: None
+Instr index: 2		Issue: 3		Exec Strt: None		Exec Comp: None		Write Res: None
+
+Clock Cycle: 7 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: None		Write Res: None
+Instr index: 1		Issue: 2		Exec Strt: None		Exec Comp: None		Write Res: None
+Instr index: 2		Issue: 3		Exec Strt: None		Exec Comp: None		Write Res: None
+
+Clock Cycle: 8 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: None		Write Res: None
+Instr index: 1		Issue: 2		Exec Strt: None		Exec Comp: None		Write Res: None
+Instr index: 2		Issue: 3		Exec Strt: None		Exec Comp: None		Write Res: None
+
+Clock Cycle: 9 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: None		Write Res: None
+Instr index: 1		Issue: 2		Exec Strt: None		Exec Comp: None		Write Res: None
+Instr index: 2		Issue: 3		Exec Strt: None		Exec Comp: None		Write Res: None
+
+Clock Cycle: 10 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 10		Write Res: None
+Instr index: 1		Issue: 2		Exec Strt: None		Exec Comp: None		Write Res: None
+Instr index: 2		Issue: 3		Exec Strt: None		Exec Comp: None		Write Res: None
+
+Clock Cycle: 11 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 10		Write Res: 11
+Instr index: 1		Issue: 2		Exec Strt: None		Exec Comp: None		Write Res: None
+Instr index: 2		Issue: 3		Exec Strt: None		Exec Comp: None		Write Res: None
+
+Clock Cycle: 12 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 10		Write Res: 11
+Instr index: 1		Issue: 2		Exec Strt: 12		Exec Comp: None		Write Res: None
+Instr index: 2		Issue: 3		Exec Strt: None		Exec Comp: None		Write Res: None
+
+Clock Cycle: 13 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 10		Write Res: 11
+Instr index: 1		Issue: 2		Exec Strt: 12		Exec Comp: 13		Write Res: None
+Instr index: 2		Issue: 3		Exec Strt: None		Exec Comp: None		Write Res: None
+
+Clock Cycle: 14 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 10		Write Res: 11
+Instr index: 1		Issue: 2		Exec Strt: 12		Exec Comp: 13		Write Res: 14
+Instr index: 2		Issue: 3		Exec Strt: 14		Exec Comp: None		Write Res: None
+
+Clock Cycle: 15 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 10		Write Res: 11
+Instr index: 1		Issue: 2		Exec Strt: 12		Exec Comp: 13		Write Res: 14
+Instr index: 2		Issue: 3		Exec Strt: 14		Exec Comp: 15		Write Res: None
+
+Clock Cycle: 16 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 10		Write Res: 11
+Instr index: 1		Issue: 2		Exec Strt: 12		Exec Comp: 13		Write Res: 14
+Instr index: 2		Issue: 3		Exec Strt: 14		Exec Comp: 15		Write Res: 16
+
+Finished at Clock Cycle: 16
+
+Clock Cycle: 16 
+Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 10		Write Res: 11
+Instr index: 1		Issue: 2		Exec Strt: 12		Exec Comp: 13		Write Res: 14
+Instr index: 2		Issue: 3		Exec Strt: 14		Exec Comp: 15		Write Res: 16
