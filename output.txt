@@ -1,3 +1,4 @@
+0
 
 Clock Cycle: 1 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: None		Write Res: None
@@ -6,6 +7,8 @@ Instr index: 2		Issue: None		Exec Strt: None		Exec Comp: None		Write Res: None
 Instr index: 3		Issue: None		Exec Strt: None		Exec Comp: None		Write Res: None
 Instr index: 4		Issue: None		Exec Strt: None		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: None		Exec Strt: None		Exec Comp: None		Write Res: None
+0
+1
 
 Clock Cycle: 2 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: None		Write Res: None
@@ -14,6 +17,8 @@ Instr index: 2		Issue: None		Exec Strt: None		Exec Comp: None		Write Res: None
 Instr index: 3		Issue: None		Exec Strt: None		Exec Comp: None		Write Res: None
 Instr index: 4		Issue: None		Exec Strt: None		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: None		Exec Strt: None		Exec Comp: None		Write Res: None
+0
+1
 
 Clock Cycle: 3 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: None
@@ -22,6 +27,7 @@ Instr index: 2		Issue: 3		Exec Strt: None		Exec Comp: None		Write Res: None
 Instr index: 3		Issue: None		Exec Strt: None		Exec Comp: None		Write Res: None
 Instr index: 4		Issue: None		Exec Strt: None		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: None		Exec Strt: None		Exec Comp: None		Write Res: None
+1
 
 Clock Cycle: 4 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -38,6 +44,8 @@ Instr index: 2		Issue: 3		Exec Strt: None		Exec Comp: None		Write Res: None
 Instr index: 3		Issue: 4		Exec Strt: None		Exec Comp: None		Write Res: None
 Instr index: 4		Issue: 5		Exec Strt: None		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: None		Exec Strt: None		Exec Comp: None		Write Res: None
+3
+2
 
 Clock Cycle: 6 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -46,6 +54,8 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: None		Write Res: None
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: None		Write Res: None
 Instr index: 4		Issue: 5		Exec Strt: None		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: None		Exec Comp: None		Write Res: None
+3
+2
 
 Clock Cycle: 7 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -54,6 +64,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: None		Write Res: None
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: None
 Instr index: 4		Issue: 5		Exec Strt: None		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: None		Exec Comp: None		Write Res: None
+2
 
 Clock Cycle: 8 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -62,6 +73,8 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: None		Write Res: None
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: None		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: None		Exec Comp: None		Write Res: None
+5
+2
 
 Clock Cycle: 9 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -70,6 +83,8 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: None		Write Res: None
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: None		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: None		Write Res: None
+5
+2
 
 Clock Cycle: 10 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -78,6 +93,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: None		Write Res: None
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: None		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: None
+2
 
 Clock Cycle: 11 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -86,6 +102,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: None		Write Res: None
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: None		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+2
 
 Clock Cycle: 12 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -94,6 +111,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: None		Write Res: None
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: None		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+2
 
 Clock Cycle: 13 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -102,6 +120,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: None		Write Res: None
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: None		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+2
 
 Clock Cycle: 14 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -110,6 +129,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: None		Write Res: None
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: None		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+2
 
 Clock Cycle: 15 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -126,6 +146,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: None		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 17 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -134,6 +155,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 18 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -142,6 +164,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 19 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -150,6 +173,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 20 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -158,6 +182,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 21 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -166,6 +191,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 22 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -174,6 +200,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 23 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -182,6 +209,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 24 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -190,6 +218,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 25 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -198,6 +227,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 26 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -206,6 +236,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 27 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -214,6 +245,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 28 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -222,6 +254,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 29 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -230,6 +263,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 30 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -238,6 +272,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 31 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -246,6 +281,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 32 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -254,6 +290,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 33 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -262,6 +299,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 34 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -270,6 +308,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 35 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -278,6 +317,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 36 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -286,6 +326,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 37 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -294,6 +335,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 38 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -302,6 +344,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 39 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -310,6 +353,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 40 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -318,6 +362,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 41 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -326,6 +371,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 42 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -334,6 +380,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 43 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -342,6 +389,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 44 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -350,6 +398,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 45 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -358,6 +407,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 46 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -366,6 +416,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 47 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -374,6 +425,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 48 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -382,6 +434,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 49 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -390,6 +443,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 50 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -398,6 +452,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 51 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -406,6 +461,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 52 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -414,6 +470,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 53 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -422,6 +479,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 54 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -430,6 +488,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 55 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4
@@ -438,6 +497,7 @@ Instr index: 2		Issue: 3		Exec Strt: 6		Exec Comp: 15		Write Res: 16
 Instr index: 3		Issue: 4		Exec Strt: 6		Exec Comp: 7		Write Res: 8
 Instr index: 4		Issue: 5		Exec Strt: 17		Exec Comp: None		Write Res: None
 Instr index: 5		Issue: 6		Exec Strt: 9		Exec Comp: 10		Write Res: 11
+4
 
 Clock Cycle: 56 
 Instr index: 0		Issue: 1		Exec Strt: 1		Exec Comp: 3		Write Res: 4

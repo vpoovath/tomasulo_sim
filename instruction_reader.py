@@ -40,10 +40,10 @@ def latency_switcher(op,load_late=3,store_late=3,add_late=2,mult_late=10,
 # 34+ or 34-. The range of immediate addresses is assumed to 
 # be from 0-99. A value of 0 is handled for operand1 and operand2.
 class Instruction:
-    def __init__(self,op,dest,operand1,operand2):
+    def __init__(self,op,dest,operand1,operand2,idx):
+        self._instr_index = idx
         self._operation = op
         self._dest = dest
-        
         if is_int(operand1[0:len(operand1)-1]):
             num = int(operand1[0:len(operand1)-1])
             if operand1[len(operand1)-1] == "-": num *= -1
@@ -67,6 +67,10 @@ class Instruction:
         self._latency = latency_switcher(op)
 
     @property
+    def instr_index(self):
+        return self._instr_index
+
+    @property
     def operation(self):
         return self._operation
 
@@ -86,30 +90,30 @@ class Instruction:
     def latency(self):
         return self._latency
 
-    def execute_op(self,reg_file):
-        if isinstance(self.operand1,str):
-            operand1 = reg_file[self.operand1][1]
-        else:
-            operand1 = self.operand1
+    #def execute_op(self,reg_file):
+    #    if isinstance(self.operand1,str):
+    #        operand1 = reg_file[self.operand1][1]
+    #    else:
+    #        operand1 = self.operand1
 
-        #if is_int(self.operand1): operand1 = self.operand1
-        #else: operand1 = reg_file[self.operand1][1]
+    #    #if is_int(self.operand1): operand1 = self.operand1
+    #    #else: operand1 = reg_file[self.operand1][1]
 
-        if isinstance(self.operand2,str):
-            operand2 = reg_file[self.operand2][1]
-        else:
-            operand2 = self.operand2
-        
-        #if is_int(self.operand2): operand2 = self.operand2
-        #else: operand2 = reg_file[self.operand2][1]
+    #    if isinstance(self.operand2,str):
+    #        operand2 = reg_file[self.operand2][1]
+    #    else:
+    #        operand2 = self.operand2
+    #    
+    #    #if is_int(self.operand2): operand2 = self.operand2
+    #    #else: operand2 = reg_file[self.operand2][1]
 
-        if self.operation == "ADDD": return (operand1 + operand2)
-        elif self.operation == "SUBD": return (operand1 - operand2)
-        elif self.operation == "MULTD": return (1.0*(operand1*operand2))
-        elif self.operation == "DIVD": return (operand1/(1.0*operand2))
-        elif self.operation == "LD": return None
-        elif self.operation == "SD": return None
-        else: raise ValueError("Invalid instruction operation")
+    #    if self.operation == "ADDD": return (operand1 + operand2)
+    #    elif self.operation == "SUBD": return (operand1 - operand2)
+    #    elif self.operation == "MULTD": return (1.0*(operand1*operand2))
+    #    elif self.operation == "DIVD": return (operand1/(1.0*operand2))
+    #    elif self.operation == "LD": return None
+    #    elif self.operation == "SD": return None
+    #    else: raise ValueError("Invalid instruction operation")
         
 
 # Directly read the instructions from the text file. 
@@ -130,7 +134,7 @@ def read_text_input(filename):
 def create_instruction_list(filename=None):
     if filename is None: filename = "instruction_input.txt"
     lines        = read_text_input(filename)
-    instructions = [Instruction(line[0],line[1],line[2],line[3]) for line in
-                    lines]
+    instructions = [Instruction(line[0],line[1],line[2],line[3],idx) for idx, line in
+                    enumerate(lines)]
 
     return instructions

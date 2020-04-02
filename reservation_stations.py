@@ -11,14 +11,15 @@ from collections import OrderedDict as OrderedDict
 from tag import Tag
 
 
-# Cols: [busy status, op name, Qi Tag, op dest, Qj Tag, Vj, Qk Tag, Vk, ready status]
+# Cols: [busy status, op name, Qi Tag, op dest, Qj Tag, Vj, Qk Tag, Vk, 
+#        ready status, Instruction]
 class ReservStation:
     def __init__(self,start_idx,num_stations,rs_type):
         self._rs_type = rs_type
         self._num_stations = num_stations
         self._stations = OrderedDict((key,["No", None, Tag(None,0), None, 
                                            Tag(None,0), None, Tag(None,0),
-                                           None,"Not Ready"]) for key in 
+                                           None,"Not Ready", None]) for key in 
                                      range(start_idx, start_idx+num_stations))
     @property
     def rs_type(self):
@@ -66,6 +67,7 @@ add_rs   = ReservStation(ADDD_STATION_START,NUM_ADDD_STATIONS,"add")
 mult_rs  = ReservStation(MULTD_STATION_START,NUM_MULTD_STATIONS,"mult")
 
 
+# 
 def get_corresponding_fu(station):
     op = station[1]
     switcher = {"LD": fu.load_fu,
@@ -106,6 +108,7 @@ def is_station_ready(res_stat, stat_idx, reg_file):
         return False
 
 
+# 
 def clear_station(res_stat, stat_idx):
     res_stat.stations[stat_idx][0] = "No"
     res_stat.stations[stat_idx][1] = None
@@ -118,6 +121,7 @@ def clear_station(res_stat, stat_idx):
     res_stat.stations[stat_idx][8] = "Not Ready"
 
 
+#
 def clear_rs_tags(rs_list, tag):
     for res_stat in rs_list:
         for stat_idx, station in res_stat.stations.items():
@@ -132,19 +136,68 @@ def clear_rs_tags(rs_list, tag):
                 station[6].clear_tag()
 
 
+#
+def get_station_instr_idx(station):
+    print(station[9].instr_index)
+    return station[9].instr_index
+
+
+#
+def get_station_vj(station):
+    return station[5]
+
+
+#
+def get_station_vk(station):
+    return station[7]
+
+
+#
+def update_station_vj(station, instr, reg_file):
+    if isinstance(instr.operand1,int): station[5] = instr.operand1
+    else: station[5] = reg_file[instr.operand1][1]
+
+    return station
+
+
+#
+def update_station_vk(station, instr, reg_file):
+    if isinstance(instr.operand1,int): station[7] = instr.operand1
+    else: station[7] = reg_file[instr.operand1][1]
+
+
+    return station
+
+
+#
+def execute_station_op(station, reg_file):
+    operand1 = get_station_vj(station)
+    operand2 = get_station_vk(station)
+    operation = station[1]
+    if operation == "ADDD": return (operand1 + operand2)
+    elif operation == "SUBD": return (operand1 - operand2)
+    elif operation == "MULTD": return (1.0*(operand1*operand2))
+    elif operation == "DIVD": return (operand1/(1.0*operand2))
+    elif operation == "LD": return None
+    elif operation == "SD": return None
+    else: raise ValueError("Invalid instruction operation")
+
 # Assume that stat_idx is valid index of a non-busy station
 def populate_rs(res_stat, stat_idx, instr, reg_file):
     res_stat.stations[stat_idx][0] = "Yes"
     res_stat.stations[stat_idx][1] = instr.operation
     res_stat.stations[stat_idx][3] = instr.dest
-    res_stat.stations[stat_idx][5] = instr.operand1
-    res_stat.stations[stat_idx][7] = instr.operand2
+    res_stat.stations[stat_idx][9] = instr
+    #res_stat.stations[stat_idx][5] = instr.operand1
+    #res_stat.stations[stat_idx][7] = instr.operand2
 
     if type(instr.operand1) == int:
         res_stat.stations[stat_idx][4].clear_tag()
+        res_stat.stations[stat_idx][5] = instr.operand1
     else:
         if rf.is_register_available(reg_file,instr.operand1):
             res_stat.stations[stat_idx][4].clear_tag()
+            res_stat.stations[stat_idx][5] = reg_file[instr.operand1][1]
         else:
             res_stat.stations[stat_idx][4].rs_type = rf.get_reg_tag(reg_file, 
                                                       instr.operand1).rs_type
@@ -152,9 +205,11 @@ def populate_rs(res_stat, stat_idx, instr, reg_file):
                                                      instr.operand1).idx
     if type(instr.operand2) == int:
         res_stat.stations[stat_idx][6].clear_tag()
+        res_stat.stations[stat_idx][7] = instr.operand2
     else:
         if rf.is_register_available(reg_file, instr.operand2):
             res_stat.stations[stat_idx][6].clear_tag()
+            res_stat.stations[stat_idx][7] = reg_file[instr.operand2][1]
         else:
             res_stat.stations[stat_idx][4].rs_type = rf.get_reg_tag(reg_file,
                                                       instr.operand2).rs_type

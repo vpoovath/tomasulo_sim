@@ -87,14 +87,14 @@ def run_tomasulo_sim(filename=None):
                     break
                 (curr_rs, curr_fu) = get_corresponding_rs_fu(rs_type, rs_list,
                                                              fu_list)
-                
                 if (curr_fu.fu_type == "add" or curr_fu.fu_type == "mult"):
                     curr_fu.empty_unit()
                 else:
                     curr_fu.empty_unit(stat_idx)
     
+                station = curr_rs.stations[stat_idx]
                 it.write_result(instr_table, entry_idx, clock_cycle)
-                value = instr.execute_op(reg_file)
+                value = rs.execute_station_op(station, reg_file)
                 if value: rf.load_register_value(reg_file, dest_reg, value)
                 rs.clear_rs_tags(rs_list, rf.get_reg_tag(reg_file, dest_reg))
                 rf.clear_register_tag(reg_file, dest_reg)
@@ -131,12 +131,14 @@ def run_tomasulo_sim(filename=None):
                     func_unit = rs.get_corresponding_fu(res_stat.stations[stat_idx])
     
                     if res_stat.stations[stat_idx][8] == "Ready":
-                        station = res_stat.stations[stat_idx]
-                        exec_instr_idx = it.find_instr_idx(instr_table, station)
+                        station        = res_stat.stations[stat_idx]
+                        exec_instr_idx = rs.get_station_instr_idx(station)
     
-                        if (instr_table[exec_instr_idx]['Exec Start'] is None and 
-                            func_unit.is_available()):
+                        if (instr_table[exec_instr_idx]['Exec Start'] is None and func_unit.is_available()):
+                            exec_instr = instr_table[exec_instr_idx]['Instruction']
                             it.start_execution(instr_table,exec_instr_idx, clock_cycle)
+                            rs.update_station_vj(station, exec_instr, reg_file)
+                            rs.update_station_vk(station, exec_instr, reg_file)
                             func_unit.load_unit(instr_table[exec_instr_idx]['Instruction'],
                                                 clock_cycle, stat_idx)
                     else:
