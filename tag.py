@@ -1,4 +1,6 @@
 #!/usr/env/python
+# Author: Vivek Poovathoor
+# This module solely implements a Tag object. 
 
 
 import os
@@ -6,6 +8,10 @@ import sys
 import time
 
 
+# This object is used to store the type of reservation station and 
+# the index of the specific station within the reseration station.
+# This tag object is used by the reservation_station.py and 
+# register_file.py modules.
 class Tag:
     def __init__(self,rs_type,idx):
         self._rs_type = rs_type

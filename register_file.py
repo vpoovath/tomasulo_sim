@@ -1,4 +1,7 @@
 # Author: Vivek Poovathoor
+# This module consists of functions that allow for the creation 
+# of a register file as well interacting with it and individual registers
+# and their tags. 
 
 
 import os
@@ -6,7 +9,7 @@ import sys
 from tag import Tag
 
 
-DEFAULT_REG_VALUE = 0
+DEFAULT_REG_VALUE = 2 # Set to 2 to make arithmetic operations interesting.
 
 
 # The register file by default has 32 registers [0,...,30].
@@ -24,13 +27,17 @@ def create_register_file(max_num_regs=30):
 
     return register_file
 
-
+# Load a value into a given register. This function could also
+# be used to reset the register to its default value. 
 def load_register_value(register_file, reg_name,value=None):
-    if not(value is None): value = DEFAULT_REG_VALUE
-    if not(isinstance(reg_name,int)):
-        register_file[reg_name][1] = reg_name
+    if value is None: value = DEFAULT_REG_VALUE
+    if isinstance(reg_name,str): register_file[reg_name][1] = value
 
 
+# Append a Tag object into a register given the register's name.
+# A tag requires the reservation station type and station's index.
+# Checks are put in place to make sure that the Tag does not already
+# exist in the list. Otherwise, the Tag object is added to the list. 
 def load_register_tag(reg_file, reg_name, rs_type, stat_idx):
     tag_list = reg_file[reg_name][0]
     if not(len(tag_list) == 0):
@@ -42,12 +49,18 @@ def load_register_tag(reg_file, reg_name, rs_type, stat_idx):
         reg_file[reg_name][0].append(Tag(rs_type,stat_idx))
 
 
-def get_reg_tag(register_file, reg_name):
-    tag = register_file[reg_name][0][0]
+# Find and return the Tag object at the given register in the 
+# register file.
+def get_reg_tag(reg_file, reg_name):
+    try:
+        tag = reg_file[reg_name][0][0]
+    except IndexError:
+        return None
 
     return tag
 
 
+#
 def clear_register_tag(reg_file, reg_name,tag_idx=None):
     if tag_idx is None: idx = 0
     else: idx = tag_idx
@@ -55,6 +68,7 @@ def clear_register_tag(reg_file, reg_name,tag_idx=None):
     del tag_list[idx]
 
 
+# 
 def is_register_available(register_file, reg_name, exp_type=None, exp_idx=None):
     try:
         if not(exp_type is None) and not(exp_idx is None):
@@ -72,6 +86,3 @@ def is_register_available(register_file, reg_name, exp_type=None, exp_idx=None):
                 return False
     except IndexError:
         return True
-
-
-register_file = create_register_file()

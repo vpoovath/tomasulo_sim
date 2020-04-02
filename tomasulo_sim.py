@@ -8,27 +8,9 @@ import register_file as rf
 import reservation_stations as rs
 import functional_units as fu
 from collections import OrderedDict
+from operator import itemgetter
 from functional_units import FunctionalUnit
 from functional_units import LoadStoreUnit
-
-
-load_rs         = rs.load_rs
-store_rs        = rs.store_rs
-add_rs          = rs.add_rs
-mult_rs         = rs.mult_rs
-load_fu         = fu.load_fu
-store_fu        = fu.store_fu
-add_fu          = fu.add_fu
-mult_fu         = fu.mult_fu
-rs_list         = [load_rs, store_rs, add_rs, mult_rs]
-fu_list         = [load_fu, store_fu, add_fu, mult_fu]
-reg_file        = rf.create_register_file()
-instr_list      = ir.create_instruction_list()
-instr_table     = it.create_instruction_table(instr_list)
-clock_cycle     = 0
-instr_idx       = 0
-curr_instr      = instr_list[instr_idx]
-broadcast_instr = []
 
 
 def get_corresponding_rs_fu(rs_type, rs_list, fu_list):
@@ -52,6 +34,16 @@ def summarize_results(clock_cycle, instr_table):
         print(instr_out + issue_out + start_out + compl_out + write_out)
 
 
+def resolve_contention(broadcast_instr, reg_file):
+    stat_indices = [(rf.get_reg_tag(reg_file, write_res[1].dest).idx,
+                     broadcast_instr.index(write_res)) for write_res in
+                    broadcast_instr]
+    sorted(stat_indices, key = itemgetter(1))
+    smallest_rs_idx = stat_indices[0][1]
+    return broadcast_instr[smallest_rs_idx]
+
+
+# 
 def run_tomasulo_sim(filename=None):
     load_rs         = rs.load_rs
     store_rs        = rs.store_rs
@@ -76,11 +68,23 @@ def run_tomasulo_sim(filename=None):
         try:
             clock_cycle += 1
             # Write-Result/Broadcast-Block
-            for write_res in broadcast_instr:
+            # for write_res in broadcast_instr:
+            if broadcast_instr:
+                if len(broadcast_instr) > 1:
+                    write_res = resolve_contention(broadcast_instr, reg_file)
+                else:
+                    write_res = broadcast_instr[0]
+
+                write_res          = broadcast_instr[0]
                 entry_idx          = it.find_entry_idx(instr_table, write_res[1])
+                instr              = write_res[1]
                 dest_reg           = write_res[1].dest
-                rs_type            = rf.get_reg_tag(reg_file, dest_reg).rs_type
-                stat_idx           = rf.get_reg_tag(reg_file, dest_reg).idx
+                try:
+                    rs_type        = rf.get_reg_tag(reg_file, dest_reg).rs_type
+                    stat_idx       = rf.get_reg_tag(reg_file, dest_reg).idx
+                except AttributeError:
+                    print("Found a No Tag at Destination Register!")
+                    break
                 (curr_rs, curr_fu) = get_corresponding_rs_fu(rs_type, rs_list,
                                                              fu_list)
                 
@@ -90,6 +94,8 @@ def run_tomasulo_sim(filename=None):
                     curr_fu.empty_unit(stat_idx)
     
                 it.write_result(instr_table, entry_idx, clock_cycle)
+                value = instr.execute_op(reg_file)
+                if value: rf.load_register_value(reg_file, dest_reg, value)
                 rs.clear_rs_tags(rs_list, rf.get_reg_tag(reg_file, dest_reg))
                 rf.clear_register_tag(reg_file, dest_reg)
                 rs.clear_station(curr_rs, stat_idx)
@@ -175,6 +181,8 @@ def run_tomasulo_sim(filename=None):
 
     print("\nFinished at Clock Cycle: %s" % str((clock_cycle)))
     summarize_results(clock_cycle, instr_table)
+    for reg,value in reg_file.items():
+        print("Register %s: %d" % (reg, value[1]))
 
 
 if __name__ == '__main__':

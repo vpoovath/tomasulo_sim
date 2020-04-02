@@ -1,5 +1,9 @@
 #!/usr/env/python
 # Author: Vivek Poovathoor
+# This module implements two objects - arithmetic functional units
+# and store/load buffers. Both are treated as functional units.
+# The arithmetic functional unit can only hold one instruction, 
+# and the number of 'slots' in the buffer is set to 3 by default.
 
 
 import os
@@ -175,11 +179,9 @@ class LoadStoreUnit():
         else: return False
 
 
+# Create the actual functional unit objects for load, store,
+# add and mult.
 load_fu  = LoadStoreUnit("load", NUM_LOAD_SLOTS)
 store_fu = LoadStoreUnit("store", NUM_STORE_SLOTS)
 add_fu   = FunctionalUnit("add")
 mult_fu  = FunctionalUnit("mult")
-
-
-def negotiate_bus_contention(fu_list):
-    print("Yeah we'll cross that bridge when we get there")

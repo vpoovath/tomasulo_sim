@@ -1,4 +1,8 @@
+#!/usr/env/python
 # Author: Vivek Poovathoor
+# This module providese the means of reading in the text input file
+# and generates the instruction list that is used in the Tomasulo 
+# simulator.
 
 
 import sys
@@ -29,27 +33,33 @@ def latency_switcher(op,load_late=3,store_late=3,add_late=2,mult_late=10,
     return switcher.get(op,-1)
 
 
-# Instructions can only be LOAD, MULT, ADD, or DIVIDE
+# Instructions can only be LD, SD, ADDD, SUBD, MULTD, and DIVD.
 # Assumption: These instructions are placed in a text file
 # and consist of an instruction, dest, and two operands. 
 # Immediate addressing values take the form of, for example,
 # 34+ or 34-. The range of immediate addresses is assumed to 
-# be from 0-99.
+# be from 0-99. A value of 0 is handled for operand1 and operand2.
 class Instruction:
     def __init__(self,op,dest,operand1,operand2):
         self._operation = op
         self._dest = dest
-
-        if is_int(operand1[0:2]):
-            num = int(operand1[0:2])
-            if operand1[2] == "-": num *= -1
+        
+        if is_int(operand1[0:len(operand1)-1]):
+            num = int(operand1[0:len(operand1)-1])
+            if operand1[len(operand1)-1] == "-": num *= -1
+            self._operand1 = num
+        elif is_int(operand1[0:len(operand1)]):
+            num = int(operand1[0:len(operand1)])
             self._operand1 = num
         else:
             self._operand1  = operand1
 
-        if is_int(operand2[0:2]):
-            num = int(operand2[0:2])
-            if operand2[2] == "-": num *= -1
+        if is_int(operand2[0:len(operand2)-1]):
+            num = int(operand2[0:len(operand2)-1])
+            if operand2[len(operand2)-1] == "-": num *= -1
+            self._operand2 = num
+        elif is_int(operand2[0:len(operand2)]):
+            num = int(operand1[0:len(operand2)])
             self._operand2 = num
         else:
             self._operand2  = operand2
@@ -76,6 +86,31 @@ class Instruction:
     def latency(self):
         return self._latency
 
+    def execute_op(self,reg_file):
+        if isinstance(self.operand1,str):
+            operand1 = reg_file[self.operand1][1]
+        else:
+            operand1 = self.operand1
+
+        #if is_int(self.operand1): operand1 = self.operand1
+        #else: operand1 = reg_file[self.operand1][1]
+
+        if isinstance(self.operand2,str):
+            operand2 = reg_file[self.operand2][1]
+        else:
+            operand2 = self.operand2
+        
+        #if is_int(self.operand2): operand2 = self.operand2
+        #else: operand2 = reg_file[self.operand2][1]
+
+        if self.operation == "ADDD": return (operand1 + operand2)
+        elif self.operation == "SUBD": return (operand1 - operand2)
+        elif self.operation == "MULTD": return (1.0*(operand1*operand2))
+        elif self.operation == "DIVD": return (operand1/(1.0*operand2))
+        elif self.operation == "LD": return None
+        elif self.operation == "SD": return None
+        else: raise ValueError("Invalid instruction operation")
+        
 
 # Directly read the instructions from the text file. 
 # If no text file is specified, the one within project's directory is used.
