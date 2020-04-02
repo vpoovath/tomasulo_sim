@@ -158,7 +158,6 @@ def get_station_instr(station):
 
 #
 def get_station_instr_idx(station):
-    print(station[9].instr_index)
     return station[9].instr_index
 
 
@@ -203,13 +202,6 @@ def execute_station_op(station, reg_file):
     dest      = station[3]
     operand1  = station[5]
     operand2  = station[7]
-    import pdb; pdb.set_trace()
-    print(operation)
-    print(dest)
-    print(operand1)
-    if isinstance(operand1, str): print(reg_file[operand1])
-    print(operand2)
-    if isinstance(operand2, str): print(reg_file[operand1])
     
     if operation == "ADDD": return (operand1 + operand2)
     elif operation == "SUBD": return (operand1 - operand2)
