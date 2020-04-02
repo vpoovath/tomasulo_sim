@@ -72,8 +72,9 @@ def clear_register_tag(reg_file, reg_name,tag_idx=None):
 def is_register_available(register_file, reg_name, exp_type=None, exp_idx=None):
     try:
         if not(exp_type is None) and not(exp_idx is None):
-            if (register_file[reg_name][0][0].rs_type == exp_type and 
-                register_file[reg_name][0][0].idx == exp_idx):
+            if ((register_file[reg_name][0][0].rs_type == exp_type and 
+                register_file[reg_name][0][0].idx == exp_idx) or 
+                (len(register_file[reg_name][0]) == 0)):
                 return True
             elif len(register_file[reg_name][0]) == 0:
                 return True

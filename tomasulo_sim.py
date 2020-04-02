@@ -68,7 +68,6 @@ def run_tomasulo_sim(filename=None):
         try:
             clock_cycle += 1
             # Write-Result/Broadcast-Block
-            # for write_res in broadcast_instr:
             if broadcast_instr:
                 if len(broadcast_instr) > 1:
                     write_res = resolve_contention(broadcast_instr, reg_file)
@@ -96,6 +95,8 @@ def run_tomasulo_sim(filename=None):
                 it.write_result(instr_table, entry_idx, clock_cycle)
                 value = rs.execute_station_op(station, reg_file)
                 if value: rf.load_register_value(reg_file, dest_reg, value)
+                rs.update_rs_operands(rs_list, reg_file, dest_reg, 
+                                      rf.get_reg_tag(reg_file, dest_reg))
                 rs.clear_rs_tags(rs_list, rf.get_reg_tag(reg_file, dest_reg))
                 rf.clear_register_tag(reg_file, dest_reg)
                 rs.clear_station(curr_rs, stat_idx)
@@ -131,23 +132,16 @@ def run_tomasulo_sim(filename=None):
                     func_unit = rs.get_corresponding_fu(res_stat.stations[stat_idx])
     
                     if res_stat.stations[stat_idx][8] == "Ready":
-                        station        = res_stat.stations[stat_idx]
-                        exec_instr_idx = rs.get_station_instr_idx(station)
+                        exec_instr_idx = rs.get_station_instr_idx(res_stat.stations[stat_idx])
     
                         if (instr_table[exec_instr_idx]['Exec Start'] is None and func_unit.is_available()):
                             exec_instr = instr_table[exec_instr_idx]['Instruction']
                             it.start_execution(instr_table,exec_instr_idx, clock_cycle)
-                            rs.update_station_vj(station, exec_instr, reg_file)
-                            rs.update_station_vk(station, exec_instr, reg_file)
                             func_unit.load_unit(instr_table[exec_instr_idx]['Instruction'],
                                                 clock_cycle, stat_idx)
                     else:
                         if (rs.is_station_ready(res_stat, stat_idx, reg_file)):
                             res_stat.stations[stat_idx][8] = "Ready"
-                            rf.load_register_tag(reg_file,
-                                                 res_stat.stations[stat_idx][3],
-                                                 res_stat.rs_type,
-                                                 stat_idx)
                         else:
                             res_stat.stations[stat_idx][8] = "Not Ready"
     

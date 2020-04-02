@@ -89,8 +89,12 @@ def is_station_ready(res_stat, stat_idx, reg_file):
         raise ValueError("Invalid instruction operation!")
 
     func_unit       = get_corresponding_fu(station)
-    operand1_ready  = (station[4].rs_type is None and station[4].idx == 0)
-    operand2_ready  = (station[6].rs_type is None and station[6].idx == 0)
+    vj_tag          = get_station_vj_tag(station)
+    vk_tag          = get_station_vk_tag(station)
+    operand1_ready  = ((vj_tag.rs_type is None and vj_tag.idx == 0) or
+                      (vj_tag.rs_type == res_stat.rs_type and vj_tag.idx == stat_idx))
+    operand2_ready  = ((vk_tag.rs_type is None and vk_tag.idx == 0) or
+                      (vk_tag.rs_type == res_stat.rs_type and vk_tag.idx == stat_idx))
     dest_ready      = rf.is_register_available(reg_file,
                                                station[3],
                                                station[2].rs_type,
@@ -136,6 +140,22 @@ def clear_rs_tags(rs_list, tag):
                 station[6].clear_tag()
 
 
+def update_rs_operands(rs_list, reg_file, dest_reg, tag):
+    for res_stat in rs_list:
+        for stat_idx, station in res_stat.stations.items():
+            if (station[4].rs_type == tag.rs_type and 
+                station[4].idx == tag.idx):
+                station[5] = reg_file[dest_reg][1]
+            if (station[6].rs_type == tag.rs_type and 
+                station[6].idx == tag.idx):
+                station[7] = reg_file[dest_reg][1]
+
+
+#
+def get_station_instr(station):
+    return station[9]
+
+
 #
 def get_station_instr_idx(station):
     print(station[9].instr_index)
@@ -143,8 +163,18 @@ def get_station_instr_idx(station):
 
 
 #
+def get_station_vj_tag(station):
+    return station[4]
+
+
+#
 def get_station_vj(station):
     return station[5]
+
+
+#
+def get_station_vk_tag(station):
+    return station[6]
 
 
 #
@@ -156,46 +186,55 @@ def get_station_vk(station):
 def update_station_vj(station, instr, reg_file):
     if isinstance(instr.operand1,int): station[5] = instr.operand1
     else: station[5] = reg_file[instr.operand1][1]
-
     return station
 
 
 #
 def update_station_vk(station, instr, reg_file):
-    if isinstance(instr.operand1,int): station[7] = instr.operand1
-    else: station[7] = reg_file[instr.operand1][1]
-
+    if isinstance(instr.operand2,int): station[7] = instr.operand2
+    else: station[7] = reg_file[instr.operand2][1]
 
     return station
 
 
 #
 def execute_station_op(station, reg_file):
-    operand1 = get_station_vj(station)
-    operand2 = get_station_vk(station)
     operation = station[1]
+    dest      = station[3]
+    operand1  = station[5]
+    operand2  = station[7]
+    import pdb; pdb.set_trace()
+    print(operation)
+    print(dest)
+    print(operand1)
+    if isinstance(operand1, str): print(reg_file[operand1])
+    print(operand2)
+    if isinstance(operand2, str): print(reg_file[operand1])
+    
     if operation == "ADDD": return (operand1 + operand2)
     elif operation == "SUBD": return (operand1 - operand2)
     elif operation == "MULTD": return (1.0*(operand1*operand2))
     elif operation == "DIVD": return (operand1/(1.0*operand2))
-    elif operation == "LD": return None
-    elif operation == "SD": return None
+    elif operation == "LD": return reg_file[dest][1]
+    elif operation == "SD": return reg_file[dest][1]
     else: raise ValueError("Invalid instruction operation")
 
 # Assume that stat_idx is valid index of a non-busy station
 def populate_rs(res_stat, stat_idx, instr, reg_file):
-    res_stat.stations[stat_idx][0] = "Yes"
-    res_stat.stations[stat_idx][1] = instr.operation
-    res_stat.stations[stat_idx][3] = instr.dest
-    res_stat.stations[stat_idx][9] = instr
-    #res_stat.stations[stat_idx][5] = instr.operand1
-    #res_stat.stations[stat_idx][7] = instr.operand2
-
+    res_stat.stations[stat_idx][0]         = "Yes"
+    res_stat.stations[stat_idx][1]         = instr.operation
+    res_stat.stations[stat_idx][3]         = instr.dest
+    res_stat.stations[stat_idx][9]         = instr
+    res_stat.stations[stat_idx][2].rs_type = res_stat.rs_type
+    res_stat.stations[stat_idx][2].idx     = stat_idx
+    rf.load_register_tag(reg_file, instr.dest, res_stat.rs_type, stat_idx)
+    
     if type(instr.operand1) == int:
         res_stat.stations[stat_idx][4].clear_tag()
         res_stat.stations[stat_idx][5] = instr.operand1
     else:
-        if rf.is_register_available(reg_file,instr.operand1):
+        if rf.is_register_available(reg_file, instr.operand1, res_stat.rs_type,
+                                   stat_idx):
             res_stat.stations[stat_idx][4].clear_tag()
             res_stat.stations[stat_idx][5] = reg_file[instr.operand1][1]
         else:
@@ -207,19 +246,16 @@ def populate_rs(res_stat, stat_idx, instr, reg_file):
         res_stat.stations[stat_idx][6].clear_tag()
         res_stat.stations[stat_idx][7] = instr.operand2
     else:
-        if rf.is_register_available(reg_file, instr.operand2):
+        if rf.is_register_available(reg_file, instr.operand2, res_stat.rs_type,
+                                   stat_idx):
             res_stat.stations[stat_idx][6].clear_tag()
             res_stat.stations[stat_idx][7] = reg_file[instr.operand2][1]
         else:
-            res_stat.stations[stat_idx][4].rs_type = rf.get_reg_tag(reg_file,
+            res_stat.stations[stat_idx][6].rs_type = rf.get_reg_tag(reg_file,
                                                       instr.operand2).rs_type
-            res_stat.stations[stat_idx][4].idx = rf.get_reg_tag(reg_file,
+            res_stat.stations[stat_idx][6].idx = rf.get_reg_tag(reg_file,
                                                       instr.operand2).idx
     
-    rf.load_register_tag(reg_file, instr.dest, res_stat.rs_type, stat_idx)
-    res_stat.stations[stat_idx][2].rs_type = res_stat.rs_type
-    res_stat.stations[stat_idx][2].idx = stat_idx
-
     if is_station_ready(res_stat, stat_idx, reg_file):
         res_stat.stations[stat_idx][2].rs_type = res_stat.rs_type
         res_stat.stations[stat_idx][2].idx = stat_idx
