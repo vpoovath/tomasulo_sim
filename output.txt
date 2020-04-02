@@ -514,9 +514,9 @@ Register F2: 2
 Register F3: 2
 Register F4: 2
 Register F5: 2
-Register F6: 4
+Register F6: 2
 Register F7: 2
-Register F8: 2
+Register F8: 0
 Register F9: 2
 Register R29: 2
 Register R28: 2

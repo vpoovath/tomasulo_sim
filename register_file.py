@@ -19,19 +19,20 @@ DEFAULT_REG_VALUE = 2 # Set to 2 to make arithmetic operations interesting.
 # Similarly, the value inside each register is 0 upon initialization.
 # Q_i values are represented as a tuple, e.g. (mult,0) or (load,2). 
 def create_register_file(max_num_regs=30):
-    register_file = {"R"+str(k):[[],DEFAULT_REG_VALUE]
+    reg_file = {"R"+str(k):[[],DEFAULT_REG_VALUE]
                              for k in range(0,max_num_regs+2,1)}
     float_point_registers = {"F"+str(k):[[],DEFAULT_REG_VALUE]
                              for k in range(0,max_num_regs+2,1)}
-    register_file.update(float_point_registers)
+    reg_file.update(float_point_registers)
 
-    return register_file
+    return reg_file
+
 
 # Load a value into a given register. This function could also
 # be used to reset the register to its default value. 
-def load_register_value(register_file, reg_name,value=None):
+def load_register_value(reg_file, reg_name,value=None):
     if value is None: value = DEFAULT_REG_VALUE
-    if isinstance(reg_name,str): register_file[reg_name][1] = value
+    if isinstance(reg_name,str): reg_file[reg_name][1] = value
 
 
 # Append a Tag object into a register given the register's name.
@@ -50,7 +51,7 @@ def load_register_tag(reg_file, reg_name, rs_type, stat_idx):
 
 
 # Find and return the Tag object at the given register in the 
-# register file.
+# register file. 
 def get_reg_tag(reg_file, reg_name):
     try:
         tag = reg_file[reg_name][0][0]
@@ -60,7 +61,10 @@ def get_reg_tag(reg_file, reg_name):
     return tag
 
 
-#
+# Given the register list and the correct register name 
+# (key), delete the tag within the register. If no 
+# index is specified then assume that at least one tag is 
+# present within the value of the register and remove the sole tag.
 def clear_register_tag(reg_file, reg_name,tag_idx=None):
     if tag_idx is None: idx = 0
     else: idx = tag_idx
@@ -68,20 +72,24 @@ def clear_register_tag(reg_file, reg_name,tag_idx=None):
     del tag_list[idx]
 
 
-# 
-def is_register_available(register_file, reg_name, exp_type=None, exp_idx=None):
+# Determine if the register in the register_file is deemed available. If 
+# no reservation station type and index are not specified, then check to see
+# if the register's Tag list is empty. If a type and index are specified, then
+# if the first Tag's attribute matches the expected type and index OR if the 
+# Tag list at the register is empty, then the register is deemed available.
+def is_register_available(reg_file, reg_name, exp_type=None, exp_idx=None):
     try:
         if not(exp_type is None) and not(exp_idx is None):
-            if ((register_file[reg_name][0][0].rs_type == exp_type and 
-                register_file[reg_name][0][0].idx == exp_idx) or 
-                (len(register_file[reg_name][0]) == 0)):
+            if ((reg_file[reg_name][0][0].rs_type == exp_type and 
+                reg_file[reg_name][0][0].idx == exp_idx) or 
+                (len(reg_file[reg_name][0]) == 0)):
                 return True
-            elif len(register_file[reg_name][0]) == 0:
+            elif len(reg_file[reg_name][0]) == 0:
                 return True
             else:
                 return False
         else:
-            if len(register_file[reg_name][0]) == 0:
+            if len(reg_file[reg_name][0]) == 0:
                 return True
             else:
                 return False

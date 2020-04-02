@@ -1,8 +1,6 @@
 #!/usr/env/python
 # Author: Vivek Poovathoor
-# This module implements a ReservationStation object and 
-# functions used to interact with the individual stations within
-# a ReservationStation object.
+# This module implements the j
 
 
 import os
@@ -211,12 +209,7 @@ def set_station_vk(station,value):
     station[7] = value
 
 
-# Given the station, attempt to execute the 
-# corresponding operation by checking the operation
-# column of the station. If the operation is not 
-# arithmetic, then return the value of the destination
-# register. If the operation is arithmetic, then return
-# the result of that actual operation. 
+# 
 def execute_station_op(station, reg_file):
     operation = station[1]
     dest      = station[3]
@@ -232,23 +225,7 @@ def execute_station_op(station, reg_file):
     else: raise ValueError("Invalid instruction operation")
 
 
-# Assume that stat_idx is valid index of a non-busy station. 
-# The Reservation Station object and proper index is passed in 
-# order to begin filing out the columns of the station. Since the 
-# station is being populated, it is marked "Yes" to mean it's buy.
-# The corresponding instruction's operation, destination, and instruction
-# object itself is loaded into the station so that the simulator loop
-# will not need to keep a copy of the instruction list after the instruction
-# has been issued. Load the destination register with the tag of this 
-# station (giving the registr the type of RS and the index of the station).
-# Then determine if the operands of the instruction are ready and can be loaded
-# into the Vj and/or Vk fields of the station. If the operand is an integer
-# value then it can, if not then check to see if the register/operand is 
-# available by looking at its Tag list. If the operand is available then 
-# load stations Vj and/or Vk fields with the value at that register. If it 
-# is not available then leave the Vj and/or Vk fields empty and assign
-# Vj_tag and Vk_tag fields of the station to Tag of the register.
-# Lastly, check to see if this station is 'Ready' (to be executed).
+# Assume that stat_idx is valid index of a non-busy station
 def populate_rs(res_stat, stat_idx, instr, reg_file):
     res_stat.stations[stat_idx][0]         = "Yes"
     res_stat.stations[stat_idx][1]         = instr.operation
@@ -256,17 +233,15 @@ def populate_rs(res_stat, stat_idx, instr, reg_file):
     res_stat.stations[stat_idx][9]         = instr
     res_stat.stations[stat_idx][2].rs_type = res_stat.rs_type
     res_stat.stations[stat_idx][2].idx     = stat_idx
-
     rf.load_register_tag(reg_file, instr.dest, res_stat.rs_type, stat_idx)
     
     vj_tag = get_station_vj_tag(res_stat.stations[stat_idx])
     vj_val = get_station_vj(res_stat.stations[stat_idx])
     vk_tag = get_station_vk_tag(res_stat.stations[stat_idx])
     vk_val = get_station_vk(res_stat.stations[stat_idx])
-
     if type(instr.operand1) == int:
         vj_tag.clear_tag()
-        set_station_vj(res_stat.stations[stat_idx], instr.operand1)
+        res_stat.stations[stat_idx][5] = instr.operand1
     else:
         if rf.is_register_available(reg_file, instr.operand1, res_stat.rs_type,
                                    stat_idx):
@@ -279,12 +254,12 @@ def populate_rs(res_stat, stat_idx, instr, reg_file):
     
     if type(instr.operand2) == int:
         vk_tag.clear_tag()
-        set_station_vk(res_stat.stations[stat_idx], instr.operand2)
+        res_stat.stations[stat_idx][7] = instr.operand2
     else:
         if rf.is_register_available(reg_file, instr.operand2, res_stat.rs_type,
                                    stat_idx):
             vk_tag.clear_tag()
-            set_station_vk(res_stat.stations[stat_idx], 
+            set_station_vk(res_stat.stations[stat_idx],
                            reg_file[instr.operand2][1])
         else:
             vk_tag.rs_type = rf.get_reg_tag(reg_file, instr.operand2).rs_type

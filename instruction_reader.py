@@ -89,31 +89,6 @@ class Instruction:
     @property
     def latency(self):
         return self._latency
-
-    #def execute_op(self,reg_file):
-    #    if isinstance(self.operand1,str):
-    #        operand1 = reg_file[self.operand1][1]
-    #    else:
-    #        operand1 = self.operand1
-
-    #    #if is_int(self.operand1): operand1 = self.operand1
-    #    #else: operand1 = reg_file[self.operand1][1]
-
-    #    if isinstance(self.operand2,str):
-    #        operand2 = reg_file[self.operand2][1]
-    #    else:
-    #        operand2 = self.operand2
-    #    
-    #    #if is_int(self.operand2): operand2 = self.operand2
-    #    #else: operand2 = reg_file[self.operand2][1]
-
-    #    if self.operation == "ADDD": return (operand1 + operand2)
-    #    elif self.operation == "SUBD": return (operand1 - operand2)
-    #    elif self.operation == "MULTD": return (1.0*(operand1*operand2))
-    #    elif self.operation == "DIVD": return (operand1/(1.0*operand2))
-    #    elif self.operation == "LD": return None
-    #    elif self.operation == "SD": return None
-    #    else: raise ValueError("Invalid instruction operation")
         
 
 # Directly read the instructions from the text file. 

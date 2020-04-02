@@ -1,4 +1,8 @@
 #!/usr/env/python
+# Author: Vivek Poovathoor
+# This is the main module that runs the 
+# Tomasulo simulator and has dependencies 
+# on the several modules implemented in this repo.
 
 
 import sys
@@ -13,6 +17,10 @@ from functional_units import FunctionalUnit
 from functional_units import LoadStoreUnit
 
 
+# This is a helper function used to pick the 
+# correct reservation station object and functional unit or 
+# load-store unit object based on the rs-type. It acts
+# as a switch-case statement. 
 def get_corresponding_rs_fu(rs_type, rs_list, fu_list):
     switcher = {"load": (rs_list[0], fu_list[0]),
                 "store": (rs_list[1], fu_list[1]),
@@ -23,6 +31,8 @@ def get_corresponding_rs_fu(rs_type, rs_list, fu_list):
     return switcher.get(rs_type,(None,None))
 
 
+# Print the results of the instruction (summary) table at 
+# the given clock cycle.
 def summarize_results(clock_cycle, instr_table):
     print("\nClock Cycle: %s " % str(clock_cycle))
     for idx,entry in enumerate(instr_table):
@@ -34,16 +44,46 @@ def summarize_results(clock_cycle, instr_table):
         print(instr_out + issue_out + start_out + compl_out + write_out)
 
 
+# Given that more than one instruction is ready to be 
+# broadcasted to the CDB, this function first gathers all
+# station indices using a list of tuples. Within each tuple
+# is the index of the station (located at the instruction's
+# destination register) and the index of the instruction 
+# within the list of instructions ready to be broadcasted.
+# This new list of tuples is sorted based on their station indices,
+# in increasing order. Then the correspodning broadcast_instr list
+# index is found. The instruction at that index (smallest_rs_idx)
+# is returned. 
 def resolve_contention(broadcast_instr, reg_file):
     stat_indices = [(rf.get_reg_tag(reg_file, write_res[1].dest).idx,
                      broadcast_instr.index(write_res)) for write_res in
                     broadcast_instr]
-    sorted(stat_indices, key = itemgetter(1))
+    sorted(stat_indices, key = itemgetter(0))
     smallest_rs_idx = stat_indices[0][1]
     return broadcast_instr[smallest_rs_idx]
 
 
-# 
+# This function runs the actual simulation. All necessary
+# implementations of hardware are kept as local variables. 
+# The current instruction is initialized to the first one in instruction
+# list so as to keep program order. The while loop starts and continues
+# while instructions exist in the instruction list or while the 
+# instruction summary table is still incomplete.
+# First any instructions that need to be written to the CDB (broadcasted)
+# are handled first. If more than one instruction needs to be broadcasted,
+# the highest-priority instruction is found. After the appropriate 
+# value is determined, that value is loaded to the destination register of the
+# instruction, and then all dependent tags in all reservation stations are
+# updated after broadcasting.
+# Any instructions that are ready to be issued are removed from the instruction
+# list and are correspondingly marked as issued in the summary table.
+# Next all 'busy' stations amongst the reservation stations are gathered and
+# determiend whether they can be executed. Lowest-index order is maintained
+# through the use of an OrderedDict. 
+# Then any functional unit that is occupied is checked to see if it can be
+# released of its instruction. If that instruction is done it is added 
+# to the running list of instructions that need to broadcast their results to
+# the CDB.
 def run_tomasulo_sim(filename=None):
     load_rs         = rs.load_rs
     store_rs        = rs.store_rs
@@ -75,7 +115,7 @@ def run_tomasulo_sim(filename=None):
                     write_res = broadcast_instr[0]
 
                 write_res          = broadcast_instr[0]
-                entry_idx          = it.find_entry_idx(instr_table, write_res[1])
+                entry_idx          = write_res[1].instr_index
                 instr              = write_res[1]
                 dest_reg           = write_res[1].dest
                 try:
@@ -94,7 +134,7 @@ def run_tomasulo_sim(filename=None):
                 station = curr_rs.stations[stat_idx]
                 it.write_result(instr_table, entry_idx, clock_cycle)
                 value = rs.execute_station_op(station, reg_file)
-                if value: rf.load_register_value(reg_file, dest_reg, value)
+                rf.load_register_value(reg_file, dest_reg, value)
                 rs.update_rs_operands(rs_list, reg_file, dest_reg, 
                                       rf.get_reg_tag(reg_file, dest_reg))
                 rs.clear_rs_tags(rs_list, rf.get_reg_tag(reg_file, dest_reg))
@@ -154,8 +194,7 @@ def run_tomasulo_sim(filename=None):
                                 slot = func_unit.buffer_slots[slot_idx]
                                 instr = slot["Instruction"]
                                 if func_unit.is_instr_complete(slot, clock_cycle):
-                                    compl_instr_idx = it.find_entry_idx(instr_table,
-                                                                        instr)
+                                    compl_instr_idx = instr.instr_index
                                     it.complete_execution(instr_table, 
                                                           compl_instr_idx, 
                                                           clock_cycle)
@@ -163,8 +202,7 @@ def run_tomasulo_sim(filename=None):
                         else:
                             instr = func_unit.current_instruction
                             if func_unit.is_instr_complete(instr, clock_cycle):
-                                compl_instr_idx = it.find_entry_idx(instr_table,
-                                                                    instr)
+                                compl_instr_idx = instr.instr_index
                                 it.complete_execution(instr_table, 
                                                       compl_instr_idx, 
                                                       clock_cycle)
@@ -181,6 +219,10 @@ def run_tomasulo_sim(filename=None):
         print("Register %s: %d" % (reg, value[1]))
 
 
+# Main block: If an input file is specified, then generate the 
+# list that input file. Otherwise do not pass in the name 
+# of the file to the simulator function and use the default
+# file.
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         print("Input File: " + str(sys.argv[1]))
